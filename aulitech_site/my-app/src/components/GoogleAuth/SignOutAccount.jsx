@@ -10,7 +10,7 @@ const SignOutAccount = () => {
   const userSignOut = () => {
     signOut(auth).then(() => {
       console.log('signed out successfully');
-      navigate('/sign-in')
+      navigate('/')
     })
     .catch((error) => {
       console.log("userSignOut error:", error)
@@ -22,7 +22,7 @@ const SignOutAccount = () => {
       <button 
         onClick={userSignOut}
         type="button"
-        className="inline-flex rounded-full items-center bg-blue-500 px-2.5 py-1 text-lg font-semibold text-white disabled:bg-gray-200 disabled:cursor-not-allowed hover:bg-blue-300"
+        className="decision-button inline-flex rounded-full items-center bg-blue-500 px-2.5 py-1 text-lg font-semibold text-white disabled:bg-gray-200 disabled:cursor-not-allowed hover:opacity-70"
       >   
         Sign Out
       </button>

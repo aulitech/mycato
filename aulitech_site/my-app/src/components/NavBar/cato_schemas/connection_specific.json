@@ -1,0 +1,33 @@
+{
+    "connection_name": {
+        "label": "Connection Name",
+        "description": "Nickname for this connection",
+        "access": "rw",
+        "value": "Default Connection"
+    },
+    "screen_size" : {
+        "label" : "Screen Size", 
+        "description" : "structure containing screen height and width in pixels",
+        "access"  : "rw",
+        "value" : {
+            "height" : {
+                "description" : "height in pixels",
+                "access" : "rw",
+                "value" : 1080,
+                "range" : {
+                    "min" : 600,
+                    "max" : 4320
+                }
+            },
+            "width" : {
+                "description" : "width in pixels",
+                "access" : "rw",
+                "value" : 1920,
+                "range" : {
+                    "min" : 800,
+                    "max" : 8192
+                }
+            }
+        }
+    }
+}
