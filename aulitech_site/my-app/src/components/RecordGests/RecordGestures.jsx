@@ -1,7 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import ProgBar from "./record/ProgBar";
 import RcrdCard from "./record/RcrdCard";
-
 
 const RecordGestures = ({
   classNames,
@@ -21,7 +20,6 @@ const RecordGestures = ({
     } else {
       setStepCount(stepCount + 1);
       setWriteConnect(false);
-      // setCheckConnect(false);
     }
   };
 
