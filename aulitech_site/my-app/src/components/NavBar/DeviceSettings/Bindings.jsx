@@ -123,9 +123,9 @@ const BindingsPanel = ({ config }) => {
                     updatedBindings[index].setting3 = '';
                     break;
                 case 'button_action':
-                    updatedBindings[index].setting1 = "0";
+                    updatedBindings[index].setting1 = 0;
                     updatedBindings[index].setting2 = 'tap';
-                    updatedBindings[index].setting3 = "1";
+                    updatedBindings[index].setting3 = 1;
                     break;
                 default:
                     // Reset settings for other commands, if necessary

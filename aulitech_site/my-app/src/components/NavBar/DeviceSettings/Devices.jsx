@@ -16,8 +16,8 @@ import dynamicMouseGraphic from '../../../images/dynamic_mouse_graphic.png';
 
 // images
 import flatImage from '../images/flatImage.png';
-import landscapeImage from '../images/landscapeImage.png';
-import portraitImage from '../images/portraitImage.png';
+import leftImage from '../images/leftImage.png';
+import rightImage from '../images/rightImage.png';
 import emptystar from '../images/emptyStar.png';
 import filledin from '../images/filledStar.png';
 import PencilEditIcon from '../images/pencil-edit.svg';
@@ -583,33 +583,33 @@ const Devices = ({ devices }) => {
             },
             bottom: {
               label: "bottom",
-              value: "+z"
+              value: "-z"
             },
             left: {
               label: "left",
-              value: "+y"
+              value: "-y"
             }
           },
           image: flatImage
         },
-        landscape: {
+        left: {
           config: {
             front: {
               label: "front",
+              value: "-y"
+            },
+            bottom: {
+              label: "bottom",
               value: "-x"
             },
-            bottom: {
-              label: "bottom",
-              value: "+y"
-            },
             left: {
               label: "left",
               value: "-z"
             }
           },
-          image: landscapeImage
+          image: leftImage
         },
-        portrait: {
+        right: {
           config: {
             front: {
               label: "front",
@@ -617,14 +617,14 @@ const Devices = ({ devices }) => {
             },
             bottom: {
               label: "bottom",
-              value: "+x"
+              value: "-x"
             },
             left: {
               label: "left",
-              value: "-z"
+              value: "+z"
             }
           },
-          image: portraitImage
+          image: rightImage
         },
       };
 
@@ -649,11 +649,12 @@ const Devices = ({ devices }) => {
                 <div
                   key={key}
                   onClick={() => handleOrientationSelect(key)}
-                  style={{ margin: '10px', cursor: 'pointer' }}
+                  style={{  margin: '10px', cursor: 'pointer' }}
                 >
-                  <img src={image} alt={key} />
+                  <img src={image} alt={key} width={200} height={200}/>
                   <p style={{
-                    backgroundColor: selectedOrientation === key ? '#f9da6b' : 'transparent', 
+                    textAlign: 'center',
+                    backgroundColor: selectedOrientation === key ? '#f9da6b' : 'transparent',
                     padding: selectedOrientation === key ? '5px' : '0'
                   }}>
                     {key.charAt(0).toUpperCase() + key.slice(1)}
@@ -1422,6 +1423,9 @@ const Devices = ({ devices }) => {
         function buttonMapping(button) {
           if (button == "1") return "Left Click";
           if (button == "2") return "Right Click";
+          if (button == "4") return "Scroll Click";
+          if (button == "8") return "Button 4";
+          if (button == "16") return "Button 5";
           else {
             return getKeyOption(button);
           }
@@ -1455,15 +1459,13 @@ const Devices = ({ devices }) => {
                 updatedBindings[index]["args"][2] = '';
                 break;
               case 'button_action':
-                updatedBindings[index]["args"][0] = "0";
+                updatedBindings[index]["args"][0] = 0;
                 updatedBindings[index]["args"][1] = 'tap';
-                updatedBindings[index]["args"][2] = "1";
+                updatedBindings[index]["args"][2] = 1;
                 break;
               default:
                 // Reset settings for other commands, if necessary
-                updatedBindings[index]["args"][0] = '';
-                updatedBindings[index]["args"][1] = '';
-                updatedBindings[index]["args"][2] = '';
+                updatedBindings[index]["args"] = [];
                 break;
             }
           }
@@ -1503,10 +1505,10 @@ const Devices = ({ devices }) => {
             if (settingNumber == 0) {  // If the actor is being changed
               // Set defaults based on the new actor value
               currentBinding.args[1] = 'tap'; // Default action remains the same
-              currentBinding.args[2] = (value == '0') ? '1' : '4'; // Default button based on actor
+              currentBinding.args[2] = (value == '0') ? 1 : 4; // Default button based on actor
             }
           }
-          currentBinding["args"][settingNumber] = value;
+          currentBinding["args"][settingNumber] = isNaN(value) ? value : +value;
 
           switch (activeOperationMode) {
             case "gesture_mouse":
@@ -1644,6 +1646,9 @@ const Devices = ({ devices }) => {
                                     >
                                       <option value={1}>Left Mouse Click</option>
                                       <option value={2}>Right Mouse Click</option>
+                                      <option value={4}>Scroll Wheel Click</option>
+                                      <option value={8}>Button 4 Click</option>
+                                      <option value={16}>Button 5 Click</option>
                                     </select>
                                   </div>
 
@@ -1678,6 +1683,7 @@ const Devices = ({ devices }) => {
                                     >
                                       <option selected="selected" value={0}>Mouse</option>
                                       <option value={1}>Keyboard</option>
+
                                     </select>
                                   </div>
 
@@ -1715,6 +1721,9 @@ const Devices = ({ devices }) => {
                                         onChange={(e) => handleSettingsChange(index, 2, e.target.value)}>
                                         <option value={1}>Left Mouse Click</option>
                                         <option value={2}>Right Mouse Click</option>
+                                        <option value={4}>Scroll Wheel Click</option>
+                                      <option value={8}>Button 4 Click</option>
+                                      <option value={16}>Button 5 Click</option>
                                       </select>
                                     </div>
                                   )}
