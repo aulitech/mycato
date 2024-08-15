@@ -587,29 +587,12 @@ const Devices = ({ devices }) => {
             },
             left: {
               label: "left",
-              value: "+y"
+              value: "-y"
             }
           },
           image: flatImage
         },
         left: {
-          config: {
-            front: {
-              label: "front",
-              value: "-y"
-            },
-            bottom: {
-              label: "bottom",
-              value: "-x"
-            },
-            left: {
-              label: "left",
-              value: "-z"
-            }
-          },
-          image: leftImage
-        },
-        right: {
           config: {
             front: {
               label: "front",
@@ -622,6 +605,23 @@ const Devices = ({ devices }) => {
             left: {
               label: "left",
               value: "+z"
+            }
+          },
+          image: leftImage
+        },
+        right: {
+          config: {
+            front: {
+              label: "front",
+              value: "-y"
+            },
+            bottom: {
+              label: "bottom",
+              value: "-x"
+            },
+            left: {
+              label: "left",
+              value: "-z"
             }
           },
           image: rightImage
