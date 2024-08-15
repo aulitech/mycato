@@ -15,6 +15,7 @@ const createMarkup = (markdown) => {
 };
 
 const releasesMetadata = [
+  { version: '0.1.0-pre', createdAt: '2024-08-14T01:21:35Z', markdownPath: 'releases/v0.1.0/description', zipPath: 'releases/v0.1.0/release.zip' },
   { version: '0.0.8', createdAt: '2024-02-07T01:21:35Z', markdownPath: 'releases/v0.0.8/description', zipPath: 'releases/v0.0.8/release.zip' },
   //{version: '0.0.7', createdAt: '2024-01-24T02:04:21Z' , markdownPath: 'releases/v0.0.7/description' , zipPath: 'releases/v0.0.7/release.zip'},
   //{version: '0.0.6', createdAt: "2024-01-07T06:05:39Z" , markdownPath: 'releases/v0.0.6/description' , zipPath: 'releases/v0.0.6/release.zip'},
@@ -143,7 +144,7 @@ const Updates = () => {
     setVisibleItems(itemsToShow);
   }, [measuredHeights]);
 
-  // fixes load more button to the bottom until we load more releases 
+  // fixes load more button to the bottom until we load more releases
   const [buttonState, setButtonState] = useState('fixed');
   const [displayedReleaseCount, setDisplayedReleaseCount] = useState(3);
   const loadMoreReleases = () => {
