@@ -47,8 +47,9 @@ const sectionHeadingStyle = {
   // backgroundColor: '#fcdc6d',
   // borderRadius: '.625rem',
   // padding: '5px 15px',
-  display: 'inline-block',
+  //display: 'inline-block',
   // boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
+  marginRight: '1.3rem',
   marginLeft: '1.3rem'
 };
 
@@ -56,7 +57,7 @@ const CheckboxOption = ({ checked, onChange, title, description }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '.625rem', marginLeft: '40px' }}>
+    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '.625rem', marginLeft: '2.5rem' }}>
       <label
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -146,7 +147,7 @@ const InputSlider = ({ value, onChange, min, max, step, sliderTitle, unit, slide
   };
 
   return (
-    <div style={{ marginBottom: '.625rem', marginLeft: '40px' }}>
+    <div style={{ marginBottom: '.625rem', marginLeft: '2.5rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <label
           htmlFor={sliderLabel}
@@ -228,7 +229,7 @@ const Dropdown = ({ value, onChange, title, description, options }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             htmlFor="dropdown"
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+            style={styles.labelStyle}
           >
             {title}
           </label>
@@ -269,20 +270,15 @@ const styles = {
     fontFamily: 'Arial, sans-serif',
   },
   labelStyle: {
-    fontSize: 'large',
-    fontWeight: 'bold',
-    display: 'block',
-    marginBottom: '.625rem',
+    fontWeight: 'bold'
   },
   selectStyle: {
-    padding: '.65rem15px',
-    fontSize: 'large',
+    padding: '.65rem 1rem',
     borderRadius: '5px',
-    border: '1px solid #ddd',
-    marginBottom: '.625rem',
+    border: 'none'
   },
   descriptionStyle: {
-    fontSize: 'large',
+    fontSize: 'small',
     color: '#666',
   },
 };
@@ -642,7 +638,7 @@ const Devices = ({ devices }) => {
             Orientation
           </h2>
           {isOrientationExpanded && (
-            <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginLeft: '40px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginLeft: '2.5rem' }}>
               {Object.entries(orientations).map(([key, { image }]) => (
                 <div
                   key={key}
@@ -742,7 +738,7 @@ const Devices = ({ devices }) => {
                 cursor: 'pointer',
                 width:'33%'
               }}>
-              Add Connection
+              +Connection
             </button>
           </div>
         </div>
@@ -973,7 +969,7 @@ const Devices = ({ devices }) => {
                   step={1}
                   sliderTitle={"Height"}
                   unit={"px"}
-                  sliderDescription={"Height of interface screen"}
+                  sliderDescription={"Total vertical pixels"}
                 />
 
                 <InputSlider
@@ -985,7 +981,7 @@ const Devices = ({ devices }) => {
                   step={1}
                   sliderTitle={"Width"}
                   unit={"px"}
-                  sliderDescription={"Width of interface screen"}
+                  sliderDescription={"Total horizontal pixels"}
                 />
               </div>
             )}
@@ -1022,7 +1018,6 @@ const Devices = ({ devices }) => {
               Mouse Settings</button>
             {!isCollapsed && (
               <div>
-
                 <InputSlider
                   sliderLabel={'mouseScaleX'}
                   value={config.config.mouse.value.scale_x.value}
@@ -1047,8 +1042,8 @@ const Devices = ({ devices }) => {
                 />
 
                 <div>
-                  <h3 style={{ marginLeft: '40px' }}>Dynamic Mouse:</h3>
-                  <div style={{ marginLeft: '80px' }}>
+                  <h3 style={{ marginLeft: '2.5rem' }}>Dynamic Mouse:</h3>
+                  <div style={{ marginLeft: '5em' }}>
                     <h3>User Speed:</h3>
                     <div style={{ marginLeft: '0px' }}>
                       <InputSlider
@@ -1075,7 +1070,7 @@ const Devices = ({ devices }) => {
                       />
                     </div>
                   </div>
-                  <div style={{ marginLeft: '80px' }}>
+                  <div style={{ marginLeft: '5rem' }}>
                     <h3>Cursor Speed:</h3>
                     <div style={{ marginLeft: '0px' }}>
                       <InputSlider
@@ -1106,6 +1101,45 @@ const Devices = ({ devices }) => {
                     <img src={dynamicMouseGraphic} alt="Dynamic Mouse Graph" style={{ width: '75%', marginTop: '1.3rem', marginBottom: '2rem' }} />
                   </div>
                 </div>
+                <CheckboxOption
+                  checked={config.config.mouse.value.dwell_repeat.value}
+                  onChange={(e) => handleModeConfigChange(['mouse', 'value', 'dwell_repeat', 'value'], activeOperationMode)(e.target.checked)}
+                  title="Dwell Repeat Clicks"
+                  description="Continued idle causes multiple clicks"
+                />
+                <InputSlider
+                  sliderLabel={'mouseDwellDuration'}
+                  value={config.config.mouse.value.dwell_duration.value}
+                  onChange={(e) => handleModeConfigChange(['mouse', 'value', 'dwell_duration', 'value'], activeOperationMode)(parseInt(e.target.value))}
+                  min={20}
+                  max={100}
+                  step={1}
+                  unit={"cs"}
+                  sliderTitle="Dwell Trigger Cycles"
+                  sliderDescription="Amount of idle time (in .01 second increments) needed to trigger action in dwell_click"
+                />
+                  <InputSlider
+                  sliderLabel={'mouseShakeSize'}
+                  value={config.config.mouse.value.shake_size.value}
+                  onChange={(e) => handleModeConfigChange(['mouse', 'value', 'shake_size', 'value'], activeOperationMode)(e.target.value)}
+                  min={0}
+                  max={20}
+                  step={1}
+                  unit={"px"}
+                  sliderTitle="Shake Size"
+                  sliderDescription="Size of cursor movement for gesturer indicator"
+                />
+                <InputSlider
+                  sliderLabel={'mouseNumberShakes'}
+                  value={config.config.mouse.value.num_shake.value}
+                  onChange={(e) => handleModeConfigChange(['mouse', 'value', 'num_shake', 'value'], activeOperationMode)(e.target.value)}
+                  min={1}
+                  max={4}
+                  step={1}
+                  sliderTitle="Number of Shakes"
+                  unit={"shakes"}
+                  sliderDescription="Number of times to repeat gesture ready indicator"
+                />
 
                 <InputSlider
                   sliderLabel={'mouseIdleThreshold'}
@@ -1168,8 +1202,7 @@ const Devices = ({ devices }) => {
                 // borderRadius: '.625rem',
                 // padding: '5px 15px',
                 display: 'inline-block',
-                // boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-                fontSize: 'x-large',
+
                 fontWeight: 'bold',
                 border: 'none',
                 cursor: 'pointer',
@@ -1254,7 +1287,6 @@ const Devices = ({ devices }) => {
                 // padding: '5px 15px',
                 display: 'inline-block',
                 // boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-                fontSize: 'x-large',
                 fontWeight: 'bold',
                 border: 'none',
                 cursor: 'pointer',
@@ -1267,28 +1299,6 @@ const Devices = ({ devices }) => {
             </button>
             {!isCollapsed && (
               <div>
-                  <InputSlider
-                  sliderLabel={'mouseShakeSize'}
-                  value={config.config.mouse.value.shake_size.value}
-                  onChange={(e) => handleModeConfigChange(['mouse', 'value', 'shake_size', 'value'], activeOperationMode)(e.target.value)}
-                  min={0}
-                  max={20}
-                  step={1}
-                  unit={"px"}
-                  sliderTitle="Shake Size"
-                  sliderDescription="Size of cursor movement for gesturer indicator"
-                />
-                <InputSlider
-                  sliderLabel={'mouseNumberShakes'}
-                  value={config.config.mouse.value.num_shake.value}
-                  onChange={(e) => handleModeConfigChange(['mouse', 'value', 'num_shake', 'value'], activeOperationMode)(e.target.value)}
-                  min={1}
-                  max={4}
-                  step={1}
-                  sliderTitle="Number of Shakes"
-                  unit={"shakes"}
-                  sliderDescription="Number of times to repeat gesture ready indicator"
-                />
 
                 {/* <div style={sliderContainerStyle}> */}
                 {/* <p style={descriptionStyle}>Adjust your gesture collection settings below:</p> */}
@@ -1314,23 +1324,7 @@ const Devices = ({ devices }) => {
                   unit={"s"}
                   sliderDescription="Maximum Time (seconds) to Wait for Gesture Start before exiting recognition window"
                 />
-                <CheckboxOption
-                  checked={config.config.mouse.value.dwell_repeat.value}
-                  onChange={(e) => handleModeConfigChange(['mouse', 'value', 'dwell_repeat', 'value'], activeOperationMode)(e.target.checked)}
-                  title="Dwell Repeat Clicks"
-                  description="Continued idle causes multiple clicks"
-                />
-                <InputSlider
-                  sliderLabel={'mouseDwellDuration'}
-                  value={config.config.mouse.value.dwell_duration.value}
-                  onChange={(e) => handleModeConfigChange(['mouse', 'value', 'dwell_duration', 'value'], activeOperationMode)(parseInt(e.target.value))}
-                  min={20}
-                  max={100}
-                  step={1}
-                  unit={"cs"}
-                  sliderTitle="Dwell Trigger Cycles"
-                  sliderDescription="Amount of idle time (in .01 second increments) needed to trigger action in dwell_click"
-                />
+
                 <InputSlider
                   sliderLabel={'gestureCollectionTimeout'}
                   value={config.config.gesture.value.gc_timeout.value}
@@ -1428,8 +1422,7 @@ const Devices = ({ devices }) => {
           // borderRadius: '.625rem',
           // padding: '5px 15px',
           display: 'inline-block',
-          // boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-          fontSize: 'x-large',
+
           fontWeight: 'bold',
           border: 'none',
           cursor: 'pointer',
@@ -1561,7 +1554,7 @@ const Devices = ({ devices }) => {
                   // borderRadius: '.625rem',
                   // padding: '5px 15px',
                   // boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-                  fontSize: 'x-large',
+
                   fontWeight: 'bold',
                   border: 'none',
                   cursor: 'pointer',
@@ -1575,7 +1568,6 @@ const Devices = ({ devices }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  fontSize: 'large',
                   fontWeight: 'bold',
                   color: '#0000EE',
                 }}
@@ -1584,7 +1576,7 @@ const Devices = ({ devices }) => {
               </a>
             </div>
             {isExpanded && (
-              <div style={{ marginLeft: '40px' }}>
+              <div style={{ marginLeft: '2.5rem' }}>
                 <table className='table-fixed'>
                   <thead>
                     <tr>
@@ -1841,14 +1833,13 @@ const Devices = ({ devices }) => {
                     }
                   }}
                   style={{
-                    fontSize: 'large',
                     padding: '.625rem',
                     marginRight: '.625rem',
                   }}
                 />
               </div>
             ) : (
-              <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+              <div style={{display: 'flex', alignItems: 'center' }}>
                 <button
                   onClick={toggleIsExpanded}
                   style={{
@@ -1867,18 +1858,13 @@ const Devices = ({ devices }) => {
               </div>
             )}
 
-              <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-                <h2 style={sectionHeadingStyle}>
-               Mode
-              </h2>
-
+            <div style={{ display: 'flex' }}>
                 <Dropdown
                   value={operationModeConversion(activeOperationMode)}
                   onChange={(e) => handleOperationModeSelection(e.target.value)}
-                  title=""
+                  title="Mode:"
                   description="Select the operation mode"
                   options={[
-                    "Select Mode",
                     "Gesture Mouse",
                     "TV Remote",
                     "Pointer",
@@ -1910,12 +1896,12 @@ const Devices = ({ devices }) => {
 
           {isExpanded && (
             <div >
-
+              <ConnectionSpecificSettings connectionConfig={editedConnectionConfig} />
               {activeOperationMode == "gesture_mouse" && <GestureMouseSetting />}
               {activeOperationMode == "clicker" && <ClickerSetting />}
               {activeOperationMode == "tv_remote" && <TVRemoteSetting />}
               {activeOperationMode == "pointer" && <PointerSetting />}
-              <ConnectionSpecificSettings connectionConfig={editedConnectionConfig} />
+
             </div>
           )}
         </div>
@@ -1950,7 +1936,7 @@ const Devices = ({ devices }) => {
                 cursor: 'pointer',
                 width:'33%'
               }}>
-              Add Connection
+              +Connection
             </button>
           </div>
         </div>
@@ -2184,7 +2170,7 @@ const Devices = ({ devices }) => {
             transform: 'translate(-50%, -50%)',
             zIndex: 1000,
             backgroundColor: 'white',
-            padding: '1.3rem',
+            padding: '.65rem',
             border: '1px solid black',
             borderRadius: '.625rem',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
@@ -2249,7 +2235,7 @@ const Devices = ({ devices }) => {
         style={{
           backgroundColor: '#13bf0a', //B8860B
           color: 'white',
-          padding: '.65rem _1.3rem',
+          padding: '.65rem',
 width:'33%',
           borderRadius: '5px',
           border: 'none',
