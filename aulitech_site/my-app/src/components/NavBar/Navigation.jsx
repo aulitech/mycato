@@ -41,7 +41,7 @@ const UpdateRoute = () => {
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
-        <p>Updates</p>
+        <p>Software Updates</p>
       </NavLink>
     </div>
   );
@@ -68,7 +68,7 @@ const UserIcon = () => {
   );
 };
 
-// accordion menus 
+// accordion menus
 const DevicesList = React.memo(({ onClick }) => {
   const { classNames, isDevicesMenuOpen, devices, savedConfig, isPracticeMode, setIsPracticeMode, usbDevice } = useContext(AppContext);
 
@@ -84,13 +84,13 @@ const DevicesList = React.memo(({ onClick }) => {
 
     if (!window.location.pathname.includes('practice')) {
       // Navigate to the practice mode page for this device
-      
+
       navigate(`/devices/${devicePath}/practice`);
 
     } else {
       // Navigate back to the device's main page
       console.log("practice -> device")
-      if (isPracticeMode && JSON.stringify(savedConfig) !== '{}') { // overwrite config 
+      if (isPracticeMode && JSON.stringify(savedConfig) !== '{}') { // overwrite config
         console.log(isPracticeMode, savedConfig)
         overwriteConfigFile(savedConfig);
       }
@@ -115,7 +115,7 @@ const DevicesList = React.memo(({ onClick }) => {
   const itemDuration = totalDuration / (devices.length + 1); // Duration per item, +1 for NavLink
 
   return (
-    <>
+    <div>
       {devices.map((device, index) => {
         const devicePath = device.data.device_info.device_nickname;
         const isActive = isNavLinkActive(devicePath);
@@ -146,7 +146,7 @@ const DevicesList = React.memo(({ onClick }) => {
                   {devicePath}
 
                   {isConnected && (
-                    <div title="Device connected to computer via USB." style={{ marginRight: '10px' }}>
+                    <div title="Cato connected via USB." style={{ marginRight: '10px' }}>
                       <img src={connectionImage} alt="Connected" className="w-6 h-6 ml-2" />
                     </div>
                   )}
@@ -154,7 +154,7 @@ const DevicesList = React.memo(({ onClick }) => {
 
 
                   {!isCalibrated && (
-                    <div title="Device not calibrated to web settings. Connect device and save settings to sync.">
+                    <div title="Connect Cato and save settings to sync with MyCato database.">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
@@ -189,23 +189,12 @@ const DevicesList = React.memo(({ onClick }) => {
           animation: `fadeIn 100ms ease-out forwards ${devices.length * itemDuration}ms`
         }}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-7 h-7"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 6v12m6-6H6"
-          />
-        </svg>
+        <div className="flex"></div>
+        <span className="flex ali justify-center w-1/2 border rounded text-base text-black bg-yellow-200">
+        Add Device
+        </span>
       </NavLink>
-
-    </>
+    </div>
   );
 });
 const DevicesRoute = () => {
@@ -402,7 +391,7 @@ const ProfileRoute = React.memo(() => {
   );
 });
 
-// main sidebar 
+// main sidebar
 const AppContext = createContext();
 const Navigation = ({
   user,
@@ -411,12 +400,12 @@ const Navigation = ({
   devices,
   connectedDevice
 }) => {
-  // states for settings and devices accordions 
+  // states for settings and devices accordions
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isDevicesMenuOpen, setIsDevicesMenuOpen] = useState(true);
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
   const [isSignOutModalOpen, setIsSignOutModalOpen] = useState(false);
-  const [savedConfig, setSavedConfig] = useState({}); // must be accessible to Practice 
+  const [savedConfig, setSavedConfig] = useState({}); // must be accessible to Practice
   const [isPracticeMode, setIsPracticeMode] = useState(false);
   const [usbDevice, setUsbDevice] = useState(connectedDevice);
   <Router>
@@ -455,7 +444,7 @@ const Navigation = ({
 
       const permission = await fileHandle.queryPermission({ mode: 'readwrite' });
       if (permission != 'granted') {
-        throw new Error('Permission to read the file was not granted.');
+        throw new Error('Permission to read the Cato configuration was not granted.');
       }
 
       const file = await fileHandle.getFile();
@@ -469,7 +458,7 @@ const Navigation = ({
       setUsbDevice(config.global_info.HW_UID.value);
       return;
     } catch (error) {
-      console.error('Error checking device status:', error);
+      console.error('Error checking Cato status:', error);
       setUsbDevice(null);
       return;
     }

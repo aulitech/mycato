@@ -35,7 +35,7 @@ function App() {
 
   const [defaultRedirect, setDefaultRedirect] = useState("")
 
-  // triggers email login/signup flow 
+  // triggers email login/signup flow
   const [isEmailLoginOpen, setIsEmailLoginOpen] = useState(false);
   const handleEmailLogin = () => {
     setIsLoginPopupOpen(true);
@@ -47,19 +47,19 @@ function App() {
     setIsLoginPopupOpen(!isLoginPopupOpen);
   };
 
-  // switches login popup to signup popup 
+  // switches login popup to signup popup
   const [isResetPasswordPopupOpen, setIsResetPasswordPopupOpen] = useState(false);
   const toggleReset = () => {
     setIsResetPasswordPopupOpen(!isResetPasswordPopupOpen);
   };
 
-  // switches login popup to signup popup 
+  // switches login popup to signup popup
   const [isSignupPopupOpen, setIsSignupPopupOpen] = useState(false);
   const toggleSignupPopup = () => {
     setIsSignupPopupOpen(!isSignupPopupOpen);
   };
 
-  // closes both 
+  // closes both
   const handleCloseEmailPopups = () => {
     setIsLoginPopupOpen(false);
     setIsSignupPopupOpen(false);
@@ -99,14 +99,14 @@ function App() {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in 
+        // Signed in
         const user = userCredential.user;
         console.log("Logged in", user);
-        toggleLoginPopup(); 
+        toggleLoginPopup();
       })
       .catch((error) => {
         console.log("Error during account login:", error.message);
-        setErrorMessage("Incorrect email or password. Please try again."); 
+        setErrorMessage("Incorrect email or password. Please try again.");
       });
   };
 
@@ -122,13 +122,13 @@ function App() {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed up 
+        // Signed up
         const user = userCredential.user;
         user.displayName = displayname;
         user.email = email;
         console.log("Signed up", user);
         localStorage.setItem('newSignUp', 'true'); // local storage??
-        toggleSignupPopup(); // close the signup popup once signed up 
+        toggleSignupPopup(); // close the signup popup once signed up
       })
       .catch((error) => {
         console.log("Error during account creation:", error.message);
@@ -479,7 +479,7 @@ function App() {
           <>
             <Navigation user={user} classNames={classNames} devices={devices} currIndex={currIndex} connectedDevice={usbDevice} />
             {/* This should be the only main tag */}
-            <main id='main' className="py-10 lg:pl-72">
+            <main id='main' className="lg:pl-72">
               <div className="px-4 sm:px-6 lg:px-8" >
                 <Routes>
                   {/* <Route exact path="/" element={<Dashboard classNames={classNames} user={user} devices={devices} />}/>
@@ -509,7 +509,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen">
+    <div className="h-screen bg-slate-300">
       {user === null && (
         <div className="flex w-full items-center justify-center z-50 transition px-6 bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent fixed top-0 h-landingNavigationBar">
           <div className="flex w-full items-center justify-center z-50 transition px-6 bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent fixed top-0 h-landingNavigationBar">
