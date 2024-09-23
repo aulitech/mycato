@@ -509,7 +509,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen bg-slate-300">
+    <div className="h-screen overflow-hidden bg-slate-300">
       {user === null && (
         <div className="flex w-full items-center justify-center z-50 transition px-6 bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent fixed top-0 h-landingNavigationBar">
           <div className="flex w-full items-center justify-center z-50 transition px-6 bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent fixed top-0 h-landingNavigationBar">
