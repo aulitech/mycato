@@ -123,6 +123,23 @@ const DarkYellowSlider = styled(Slider)(({ theme }) => ({
   },
 }));
 
+
+const EditableCollapsible = ({ title, onChange, children }) => {
+
+  return (
+
+    <details className='group py-2' >
+      <summary className='text-sm font-bold pb-2'>
+        <input className="hidden group-open:flex text-sm font-bold pb-2" id={title} value={title} onChange={onChange} />
+        <span className="group-open:hidden text-sm font-bold pb-2">{title}</span>
+      </summary>
+      <div className='flex w-full flex-row flex-wrap align-items-baseline gap-x-8 gap-y-4 justify-start'>
+        {children}
+      </div>
+    </details>
+  )
+}
+
 const Collapsible = ({ title, children }) => {
   return (
     <details open className='py-2' >
@@ -259,11 +276,6 @@ const Dropdown = ({ value, onChange, title, description, options }) => {
   );
 }
 
-const DashedLine = () => {
-  return (
-    <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
-  );
-};
 
 const Devices = ({ devices }) => {
   const editButtonRef = useRef(null);
@@ -633,20 +645,12 @@ const Devices = ({ devices }) => {
   };
 
   const AccordionList = ({ data }) => {
-    const noConnectionsStyle = {
-      textAlign: 'center',
-      padding: '1.3rem',
-      fontSize: 'large',
-      color: '#666',
-    };
 
     if (data.length === 0) { //no connections display
       return (
-        <div style={sliderContainerStyle}>
-          <div style={noConnectionsStyle}>
+        <div className='justify-center align-center'>
             No connections yet. Add a connection to begin.
           </div>
-        </div>
       );
     }
 
@@ -1029,7 +1033,7 @@ const Devices = ({ devices }) => {
               unit={"px"}
               sliderTitle="Shake Size"
               sliderDescription="Size of cursor movement for gesturer indicator"
-            />
+            />?
             <InputSlider
               sliderLabel={'mouseNumberShakes'}
               value={config.config.mouse.value.num_shake.value}
@@ -1560,18 +1564,38 @@ const Devices = ({ devices }) => {
       }
 
       return (
-        <div>
+        <div>{/*}
+          <EditableCollapsible
+            title={connection.name || temporaryConnectionName }
+            onChange={(e) => setTemporaryConnectionName(e.target.value)}
+            onConfirm={handleSaveEditedName(index)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSaveEditedName(index);
+              }
+            }}
+            >
+          <div className="flex-1  overflow-x-hidden overflow-y-scroll">
+              <ConnectionSpecificSettings connectionConfig={editedConnectionConfig} />
+              {activeOperationMode === "gesture_mouse" && <GestureMouseSetting />}
+              {activeOperationMode === "clicker" && <ClickerSetting />}
+              {activeOperationMode === "tv_remote" && <TVRemoteSetting />}
+              {activeOperationMode === "pointer" && <PointerSetting />}
+            </div>
+          </EditableCollapsible>
+          {*/}
+
           <div className='flex flex-row w-full justify-between items-center bg-slate-400'>
             <div className='flex flex-row w-full gap-8 justify-start align-baseline  items-center'>
               {editingConnectionIndex === index ? (
-                <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+                <div >
                   <input
                     ref={inputRef}
                     autoFocus
                     type="text"
                     value={temporaryConnectionName}
                     onChange={(e) => setTemporaryConnectionName(e.target.value)}
-                    onKeyPress={(e) => {
+                    onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         handleSaveEditedName(index);
                       }
@@ -1586,7 +1610,7 @@ const Devices = ({ devices }) => {
                     onClick={toggleIsExpanded}
                     className='font-bold text-sm text-slate-800'
                   >
-                    {connection.name}
+                    {(index+1) + ': '  + connection.name}
                   </button>
                 </div>
               )}
@@ -1611,20 +1635,22 @@ const Devices = ({ devices }) => {
 
 
           {isExpanded && (
-            <div className="flex-1  overflow-x-hidden overflow-y-scroll">
+            <div className="flex-1  overflow-x-hidden overflow-y-auto">
               <ConnectionSpecificSettings connectionConfig={editedConnectionConfig} />
               {activeOperationMode == "gesture_mouse" && <GestureMouseSetting />}
               {activeOperationMode == "clicker" && <ClickerSetting />}
               {activeOperationMode == "tv_remote" && <TVRemoteSetting />}
               {activeOperationMode == "pointer" && <PointerSetting />}
             </div>)}
+
         </div>
+
       )
+
     }
 
     return (
-      <div >
-
+      <div className='overflow-y-auto'>
         {data.map((item, index) => (
           <div key={index}>
             <ConnectionAccordion
@@ -1632,22 +1658,11 @@ const Devices = ({ devices }) => {
               onDelete={handleConnectionDeletion} //delete connections
               index={index}
             >
-              {item.name}
             </ConnectionAccordion>
-            {index !== data.length - 1 && <DashedLine />}
           </div>
         ))}
-
-
       </div>
     );
-  };
-
-  const sliderContainerStyle = {
-    margin: '1rem',
-    boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)',
-    borderRadius: '4px',
-    padding: '1rem',
   };
 
   const handleSave = async () => {
@@ -1876,7 +1891,7 @@ const Devices = ({ devices }) => {
         </div>
       )}
 
-      <div className="flex flex-col ">
+      <div className="flex flex-col h-screen overflow-y-hidden">
         <div><GlobalInfoSection /></div>
         <div className='flex flex-row align-center justify-start pt-2'>
           <span className='pr-4 font-bold'>Connections</span>
