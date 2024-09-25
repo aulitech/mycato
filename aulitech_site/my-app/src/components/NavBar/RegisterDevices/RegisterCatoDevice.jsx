@@ -479,7 +479,7 @@ const RegisterCatoDevice = ({ user, devices, handleRenderDevices }) => {
       console.error("Failed to add device.");
     }
 
-    // const 
+    // const
     if (!deviceAdded) {
       return;
     }
@@ -652,7 +652,7 @@ const RegisterCatoDevice = ({ user, devices, handleRenderDevices }) => {
       <div className="border-b border-gray-200 pb-5">
         <div className="pl-4 sm:pl-6 lg:pl-8">
           <p className="text-lg text-gray-900">
-            To register a new Cato device, connect it to your computer via cable.
+            To register a new Cato device, connect it to your computer via USB cable.
           </p>
         </div>
       </div>
@@ -667,10 +667,11 @@ const RegisterCatoDevice = ({ user, devices, handleRenderDevices }) => {
                 </h3>
               </div>
               <div className="mt-5 max-w-xl text-lg text-gray-900">
-                <p>Enter a name for your Cato below.</p>
+                <p>Enter a name for your Cato, up to 14 Characters.</p>
               </div>
               <div className="w-full mt-5 sm:max-w-xs">
                 <input
+                  maxLength={14}
                   type="text"
                   value={enteredName}
                   onChange={(e) => setEnteredName(e.target.value)}
