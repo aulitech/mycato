@@ -32,11 +32,11 @@ export async function fetchAndCompareConfig(webAppHwUid) {
         if (!fileHandle) {
             throw new Error('No file handle found.');
         }
-        
+
         // If there's no handle in IndexedDB, use the directory picker
         let file = null;
         try {
-            file = await fileHandle.getFile();    
+            file = await fileHandle.getFile();
         } catch (error) {
             if (error instanceof DOMException || error instanceof TypeError) {
                 let directoryHandle = await window.showDirectoryPicker();
@@ -116,14 +116,59 @@ export async function getFileHandle() {
 
 }
 
+
+//remove all the keys that are not needed
+const stripConfig = (conf) => {
+    // remove all the keys that are not needed
+    let strippedConfig = {};
+
+    const strip = (c) => {
+        if (typeof c !== 'object') {
+            return c;
+        }
+        if (c.length === 0) {
+            return null;
+        }
+
+        if (Array.isArray(c)) {
+            return c.map((confItem) => strip(confItem));
+        }
+
+        let temp = {};
+        if ('value' in c) {
+            temp['value'] = strip(c.value);
+            return (temp);
+        }
+
+        Object.entries(c).forEach(([key, value]) => {
+            temp[key] = strip(value);
+        });
+
+        return (temp);
+    }
+
+    Object.entries(conf).forEach(([key, value]) => {
+        strippedConfig[key] = strip(value);
+    });
+
+    return strippedConfig;
+}
+
+
+
 export async function overwriteConfigFile(newConfig) {
     try {
+
+        let strippedConfig = stripConfig(newConfig);
+
+        strippedConfig=JSON.stringify(strippedConfig)
+
         // check if we have a file handle
         const fileHandle = await getFileHandle();
 
         // overwrite config
         const writable = await fileHandle.createWritable();
-        await writable.write(new Blob([JSON.stringify(newConfig, null, 2)], { type: 'application/json' }));
+        await writable.write(new Blob([strippedConfig], { type: 'application/json' }));
         await writable.close();
 
         console.log('Config file overwritten and handle stored successfully.');

@@ -15,11 +15,9 @@ const createMarkup = (markdown) => {
 };
 
 const releasesMetadata = [
+  { version: '0.1.3', createdAt: '2024-09-27T01:21:35Z', markdownPath: 'releases/v0.1.3/description', zipPath: 'releases/v0.1.3/release.zip' },
   { version: '0.1.0-pre', createdAt: '2024-08-14T01:21:35Z', markdownPath: 'releases/v0.1.0/description', zipPath: 'releases/v0.1.0/release.zip' },
-  { version: '0.0.8', createdAt: '2024-02-07T01:21:35Z', markdownPath: 'releases/v0.0.8/description', zipPath: 'releases/v0.0.8/release.zip' },
-  //{version: '0.0.7', createdAt: '2024-01-24T02:04:21Z' , markdownPath: 'releases/v0.0.7/description' , zipPath: 'releases/v0.0.7/release.zip'},
-  //{version: '0.0.6', createdAt: "2024-01-07T06:05:39Z" , markdownPath: 'releases/v0.0.6/description' , zipPath: 'releases/v0.0.6/release.zip'},
-  //{version: '0.0.5', createdAt: "2023-09-20T01:08:02Z", markdownPath: 'releases/v0.0.5/description' , zipPath: 'releases/v0.0.5/release.zip'},
+  { version: '0.0.8', createdAt: '2024-02-07T01:21:35Z', markdownPath: 'releases/v0.0.8/description', zipPath: 'releases/v0.0.8/release.zip' }
 ];
 
 const FormattedUpdate = ({ release, index, id }) => {

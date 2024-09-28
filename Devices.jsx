@@ -649,8 +649,8 @@ const Devices = ({ devices }) => {
     if (data.length === 0) { //no connections display
       return (
         <div className='justify-center align-center'>
-          No connections yet. Add a connection to begin.
-        </div>
+            No connections yet. Add a connection to begin.
+          </div>
       );
     }
 
@@ -1033,7 +1033,7 @@ const Devices = ({ devices }) => {
               unit={"px"}
               sliderTitle="Shake Size"
               sliderDescription="Size of cursor movement for gesturer indicator"
-            />
+            />?
             <InputSlider
               sliderLabel={'mouseNumberShakes'}
               value={config.config.mouse.value.num_shake.value}
@@ -1159,11 +1159,11 @@ const Devices = ({ devices }) => {
           return actionMappings[action] || "Unknown action";
         }
         function buttonMapping(button) {
-          if (button === "1") return "Left Click";
-          if (button === "2") return "Right Click";
-          if (button === "4") return "Scroll Click";
-          if (button === "8") return "Button 4";
-          if (button === "16") return "Button 5";
+          if (button == "1") return "Left Click";
+          if (button == "2") return "Right Click";
+          if (button == "4") return "Scroll Click";
+          if (button == "8") return "Button 4";
+          if (button == "16") return "Button 5";
           else {
             return getKeyOption(button);
           }
@@ -1191,8 +1191,8 @@ const Devices = ({ devices }) => {
           if (currentBinding.command !== value) {
             switch (value) {
               case 'dwell_click':
-                updatedBindings[index]["args"][0] = 1;
-                updatedBindings[index]["args"][1] = 2;
+                updatedBindings[index]["args"][0] = "1";
+                updatedBindings[index]["args"][1] = "2";
                 updatedBindings[index]["args"][2] = '';
                 break;
               case 'button_action':
@@ -1291,171 +1291,198 @@ const Devices = ({ devices }) => {
         }
 
         return (
-          <div>
+          <div className='flex flex-col'>
+            <div className='flex justify-between items-center mb-10' style={{ marginLeft: '1.3rem', marginRight: '1.3rem' }}>
+              <button
+                onClick={toggleExpanded}
+                style={{
+                  // backgroundColor: isExpanded ? '#fcdc6d' : '#1A202C',
+                  // color: isExpanded ? '#000000' : '#FFFFFF',
+                  // borderRadius: '.625rem',
+                  // padding: '5px 15px',
+                  // boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
 
+                  fontWeight: 'bold',
+                  border: 'none',
+                  cursor: 'pointer',
+                  outline: 'none'
+                }}
+              >
+                {mode === "clicker" ? "Taps" : "Bindings"}
+              </button>
+              <a
+                href="https://youtu.be/aiT06Bs-OH0"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontWeight: 'bold',
+                  color: '#0000EE',
+                }}
+              >
+                Tutorial Video
+              </a>
+            </div>
+            {isExpanded && (
+              <div style={{ marginLeft: '2.5rem' }}>
+                <table className='table-fixed'>
+                  <thead>
+                    <tr>
+                      <th className="w-2/12 p-2 border border-gray-200">Gesture</th>
+                      <th className="w-2/12 p-2 border border-gray-200">Command</th>
+                      <th className="w-6/12 p-2 border border-gray-200">Settings</th>
+                      <th className="w-6/12 p-2 border border-gray-200">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bindingsSettings.map((binding, index) => {
+                      console.log(binding);
+                      console.log(index);
+                      if (gesturesList[index] && index != 0) { //temporary solution for the first item being ignored
+                        return (
+                          <tr key={index} className="max-h-16 h-16">
 
-            <Collapsible title={mode === "clicker" ? "Taps" : "Bindings"}>
-              <table className='table-fixed bg-slate-300 border-4 divide-y-4'>
-                <thead>
-                  <tr>
-                    <th className="w-2/12 p-2 text-start">Gesture</th>
-                    <th className="w-2/12 p-2 ">Command</th>
-                    <th className="w-6/12 p-2 ">Settings</th>
-                    <th className="w-6/12 p-2 ">Description</th>
-                  </tr>
-                </thead>
-                <tbody className='divide-y-4'>
-                  {bindingsSettings.map((binding, index) => {
-                    console.log(binding);
-                    console.log(index);
-                    if (gesturesList[index] && index !== 0) { //temporary solution for the first item being ignored
-                      return (
-                        <tr key={index} className="max-h-16  text-black text-sm ">
+                            <td className="bg-white px-3 py-4 border border-gray-200 text-gray-800 text-md">
+                              {gesturesList[index]}
+                            </td>
 
-                          <td className="p-2 font-bold">
-                            {gesturesList[index]}
-                          </td>
+                            <td className="bg-white px-3 py-4 border border-gray-200 text-gray-800 text-md">
+                              <select
+                                value={binding.command}
+                                onChange={(e) => handleCommandChange(index, e.target.value)}
+                              >
+                                <option value="noop">None (noop)</option>
+                                <option value="quick_sleep">Quick Sleep</option>
+                                <option value="pointer_sleep">Pointer Sleep</option>
+                                <option value="quick_calibrate">Quick Calibrate</option>
+                                <option value="dwell_click">Dwell Click</option>
+                                <option value="_scroll">Vertical Scroll</option>
+                                <option value="_scroll_lr">Horizontal Scroll</option>
+                                <option value="button_action">Button Action</option>
+                              </select>
+                            </td>
 
-                          <td className="p-2">
-                            <select
-                            className='bg-transparent text-center text-sm hover:bg-slate-400'
-                              value={binding.command}
-                              onChange={(e) => handleCommandChange(index, e.target.value)}
-                            >
-                              <option value="noop">None (noop)</option>
-                              <option value="quick_sleep">Quick Sleep</option>
-                              <option value="pointer_sleep">Pointer Sleep</option>
-                              <option value="quick_calibrate">Quick Calibrate</option>
-                              <option value="dwell_click">Dwell Click</option>
-                              <option value="_scroll">Vertical Scroll</option>
-                              <option value="_scroll_lr">Horizontal Scroll</option>
-                              <option value="button_action">Button Action</option>
-                            </select>
-                          </td>
-
-                          <td className= 'p-2'>
-                            {binding.command === 'dwell_click' ? (
-                              <div className="w-full h-full flex flex-row ">
-                                <div className='w-full flex-0 flex flex-col items-center'>
-                                  <th className="w-full px-2 text-center text-xs">Button</th>
-                                  <select className='py-1 text-sm text-center bg-transparent  hover:bg-slate-400'
-                                    value={binding.args[0]}
-                                    onChange={(e) => handleSettingsChange(index, 0, e.target.value)}
-                                  >
-                                    <option value={1}>Left Mouse</option>
-                                    <option value={2}>Right Mouse</option>
-                                    <option value={4}>Scroll Wheel</option>
-                                    <option value={8}>Button 4</option>
-                                    <option value={16}>Button 5</option>
-                                  </select>
-                                </div>
-
-                                <div className='w-full flex-0 flex flex-col items-center'>
-                                  <th className="w-full px-4 text-center text-xs">Cancel Speed</th>
-                                  <select className='py-1 text-sm text-center bg-transparent  hover:bg-slate-400'
-                                    value={binding.args[1]}
-                                    onChange={(e) => handleSettingsChange(index, 1, e.target.value)}
-                                  >
-                                    <option value={1}>1</option>
-                                    <option value={2}>2</option>
-                                    <option value={3}>3</option>
-                                    <option value={4}>4</option>
-                                    <option value={5}>5</option>
-                                    <option value={6}>6</option>
-                                    <option value={7}>7</option>
-                                    <option value={8}>8</option>
-                                    <option value={9}>9</option>
-                                    <option value={10}>10</option>
-                                  </select>
-                                </div>
-                              </div>
-                            ) : <div className="w-full h-full" />}
-                            {binding.command === 'button_action' ? (
-                              <div className="w-full h-full flex flex-row">
-                                {/* ACTOR */}
-                                <div className='w-full px-3 flex-0 flex flex-col items-center'>
-                                  <th className="w-full px-1 text-center text-xs">Actor</th>
-                                  <select className='py-1 text-sm text-center bg-transparent   hover:bg-slate-400'
-                                    value={binding.args[0]}
-                                    onChange={(e) => handleSettingsChange(index, 0, e.target.value)}
-                                  >
-                                    <option selected="selected" value={0}>Mouse</option>
-                                    <option value={1}>Keyboard</option>
-
-                                  </select>
-                                </div>
-
-                                {/* ACTION */}
-                                <div className='w-full px-3 flex-0 flex flex-col items-center'>
-                                  <th className="w-full px-1 text-center text-xs">Action</th>
-                                  <select className='w-fit py-1 text-sm text-center bg-transparent  hover:bg-slate-400'
-                                    value={binding.args[1]}
-                                    onChange={(e) => handleSettingsChange(index, 1, e.target.value)}
-                                  >
-                                    <option value={'tap'}>Tap</option>
-                                    <option value={'double_tap'}>Double Tap</option>
-                                    <option value={'press'}>Press and Hold</option>
-                                    <option value={'release'}>Release</option>
-                                    <option value={'toggle'}>Toggle</option>
-                                    <option value={'hold_until_idle'}>Hold Until Idle</option>
-                                    <option value={'hold_until_sig_motion'}>Hold Until Significant Motion</option>=
-                                  </select>
-                                </div>
-                                {/* BUTTON */}
-                                {binding.args[0] == "1" ? (
-                                  <div className='px-3 w-full flex-0 flex flex-col items-center'>
-                                    <th className="w-full px-1 text-center text-xs">Button</th>
-                                    <select className='py-1 text-sm text-center  bg-transparent  hover:bg-slate-400'
-                                      value={binding.args[2]}
-                                      onChange={(e) => handleSettingsChange(index, 2, e.target.value)}>
-                                      <KeyOptions />
+                            <td className={
+                              'bg-grey-200 px-3 text-gray-800 text-md ' +
+                              (binding.command === 'dwell_click' || binding.command === 'button_action'
+                                ? 'border border-gray-200'
+                                : 'border-x border-gray-200')
+                            }>
+                              {binding.command === 'dwell_click' ? (
+                                <div className="w-full h-full flex flex-row ">
+                                  <div className='w-full flex-0 flex flex-col items-center'>
+                                    <th className="w-full px-4 text-center text-sm">Button</th>
+                                    <select className='w-full py-1 text-sm'
+                                      value={binding.args[0]}
+                                      onChange={(e) => handleSettingsChange(index, 0, e.target.value)}
+                                    >
+                                      <option value={1}>Left Mouse Click</option>
+                                      <option value={2}>Right Mouse Click</option>
+                                      <option value={4}>Scroll Wheel Click</option>
+                                      <option value={8}>Button 4 Click</option>
+                                      <option value={16}>Button 5 Click</option>
                                     </select>
                                   </div>
-                                ) : (
-                                  <div className='px-3 w-full flex-0 flex flex-col items-center'>
-                                    <th className="w-full px-1 text-center text-xs">Button</th>
-                                    <select className='py-1 text-sm text-center  bg-transparent  hover:bg-slate-400'
-                                      value={binding.args[2]}
-                                      onChange={(e) => handleSettingsChange(index, 2, e.target.value)}>
-                                      <option value={1}>Left Mouse</option>
-                                      <option value={2}>Right Mouse</option>
-                                      <option value={4}>Scroll Wheel</option>
-                                      <option value={8}>Button 4</option>
-                                      <option value={16}>Button 5</option>
+
+                                  <div className='w-full flex-0 flex flex-col items-center'>
+                                    <th className="w-full px-4 text-center text-sm">Cancel Speed</th>
+                                    <select className='w-5/6 py-1 text-sm'
+                                      value={binding.args[1]}
+                                      onChange={(e) => handleSettingsChange(index, 1, e.target.value)}
+                                    >
+                                      <option value={1}>1</option>
+                                      <option value={2}>2</option>
+                                      <option value={3}>3</option>
+                                      <option value={4}>4</option>
+                                      <option value={5}>5</option>
+                                      <option value={6}>6</option>
+                                      <option value={7}>7</option>
+                                      <option value={8}>8</option>
+                                      <option value={9}>9</option>
+                                      <option value={10}>10</option>
                                     </select>
                                   </div>
-                                )}
+                                </div>
+                              ) : <div className="w-full h-full" />}
+                              {binding.command === 'button_action' ? (
+                                <div className="w-full h-full flex flex-row">
+                                  {/* ACTOR */}
+                                  <div className='w-full px-3 flex-0 flex flex-col items-center'>
+                                    <th className="w-full px-1 text-center text-sm">Actor</th>
+                                    <select className='w-5/6 py-1 text-sm'
+                                      value={binding.args[0]}
+                                      onChange={(e) => handleSettingsChange(index, 0, e.target.value)}
+                                    >
+                                      <option selected="selected" value={0}>Mouse</option>
+                                      <option value={1}>Keyboard</option>
+
+                                    </select>
+                                  </div>
+
+                                  {/* ACTION */}
+                                  <div className='w-full px-3 flex-0 flex flex-col items-center'>
+                                    <th className="w-full px-1 text-center text-sm">Action</th>
+                                    <select className='w-5/6 py-1 text-sm'
+                                      value={binding.args[1]}
+                                      onChange={(e) => handleSettingsChange(index, 1, e.target.value)}
+                                    >
+                                      <option value={'tap'}>Tap</option>
+                                      <option value={'double_tap'}>Double Tap</option>
+                                      <option value={'press'}>Press and Hold</option>
+                                      <option value={'release'}>Release</option>
+                                      <option value={'toggle'}>Toggle</option>
+                                      <option value={'hold_until_idle'}>Hold Until Idle</option>
+                                      <option value={'hold_until_sig_motion'}>Hold Until Significant Motion</option>=
+                                    </select>
+                                  </div>
+                                  {/* BUTTON */}
+                                  {binding.args[0] == "1" ? (
+                                    <div className='px-3 w-full flex-0 flex flex-col items-center'>
+                                      <th className="w-full px-1 text-center text-sm">Button</th>
+                                      <select className='w-5/6 py-1 text-sm'
+                                        value={binding.args[2]}
+                                        onChange={(e) => handleSettingsChange(index, 2, e.target.value)}>
+                                        <KeyOptions />
+                                      </select>
+                                    </div>
+                                  ) : (
+                                    <div className='px-3 w-full flex-0 flex flex-col items-center'>
+                                      <th className="w-full px-1 text-center text-sm">Button</th>
+                                      <select className='w-5/6 py-1 text-sm'
+                                        value={binding.args[2]}
+                                        onChange={(e) => handleSettingsChange(index, 2, e.target.value)}>
+                                        <option value={1}>Left Mouse Click</option>
+                                        <option value={2}>Right Mouse Click</option>
+                                        <option value={4}>Scroll Wheel Click</option>
+                                        <option value={8}>Button 4 Click</option>
+                                        <option value={16}>Button 5 Click</option>
+                                      </select>
+                                    </div>
+                                  )}
+                                </div>
+                              ) : <div className="w-full h-full" />}
+                            </td>
+
+                            {/* Description Cell */}
+                            <td className="bg-white px-3 py-2 border border-gray-200 text-gray-800 text-sm overflow-hidden">
+                              <div className="max-h-16">
+                                {generateDescription(binding)}
                               </div>
-                            ) : <div className="w-full h-full" />}
-                          </td>
+                            </td>
+                          </tr>
 
-                          {/* Description Cell */}
-                          <td className=" text-sm overflow-hidden">
-                            <div className="max-h-16">
-                              {generateDescription(binding)}
-                            </div>
-                          </td>
-                        </tr>
+                        );
+                      }
+                      return null;
+                    })}
+                  </tbody>
+                </table>
 
-                      );
-                    }
-                    return null;
-                  })}
-                </tbody>
-              </table>
-            </Collapsible>
-          </div >
+                {/* Button Container */}
+
+              </div>
+            )}
+          </div>
         );
-      }
-
-      const DemoVideo = () => {
-        return (
-          <details className='relative flex flex-row w-full justify-end'>
-            <summary className='w-fit absolute top-4 right-4 list-none px-1 py-0.5 rounded-md hover:bg-slate-400 bg-transparent '>Demo Video</summary>
-
-            <iframe width="400" height="225" src="https://www.youtube.com/embed/aiT06Bs-OH0" title="Cato Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          </details>
-        )
       }
 
       const GestureMouseSetting = () => {
@@ -1464,10 +1491,17 @@ const Devices = ({ devices }) => {
         }
         return (
           <div>
-            <DemoVideo />
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
+
             <MouseOptions config={editedGestureMouseConfig} />
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
+
             <GestureOptions config={editedGestureMouseConfig} />
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
+
             <BindingsPanel config={editedGestureMouseConfig} mode={"gesture_mouse"} />
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
+
           </div>
         );
       }
@@ -1480,12 +1514,16 @@ const Devices = ({ devices }) => {
         }
         return (
           <div>
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
             <ClickerOptions
               config={editedClickerConfig}
               collapsedSections={collapsedSections}
               setCollapsedSections={setCollapsedSections}
             />
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
             <BindingsPanel config={editedClickerConfig} mode="clicker" />
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
+
           </div>
         );
       }
@@ -1496,10 +1534,17 @@ const Devices = ({ devices }) => {
         }
         return (
           <div>
-            <DemoVideo />
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
+
             <TVRemoteOptions config={editedTVRemoteConfig} />
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
+
             <GestureOptions config={editedTVRemoteConfig} />
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
+
             <BindingsPanel config={editedTVRemoteConfig} mode={"tv_remote"} />
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
+
           </div>
         );
       };
@@ -1510,8 +1555,11 @@ const Devices = ({ devices }) => {
         }
         return (
           <div>
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
+
             <MouseOptions config={editedPointerConfig} />
-           </div>
+            <hr style={{ borderColor: '#ccc', borderWidth: '1px', margin: '.65rem0' }} />
+          </div>
         );
       }
 
@@ -1562,7 +1610,7 @@ const Devices = ({ devices }) => {
                     onClick={toggleIsExpanded}
                     className='font-bold text-sm text-slate-800'
                   >
-                    {(index + 1) + ': ' + connection.name}
+                    {(index+1) + ': '  + connection.name}
                   </button>
                 </div>
               )}
