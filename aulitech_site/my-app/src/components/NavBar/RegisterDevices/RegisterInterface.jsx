@@ -188,6 +188,7 @@ const RegisterInterface = ({ user, devices }) => {
         tvRemoteData = {
           ...tvRemoteOperation,
           ...tvRemoteDefault,
+          ...mouseDefault,
           ...gestureDefault,
           ...tvRemoteBindings,
         };
@@ -295,9 +296,9 @@ const RegisterInterface = ({ user, devices }) => {
           style={isOpModeFocused ? focusStyle : null}
         >
           <option value="pointer">Pointer</option>
-          <option value="clicker">Clicker</option>
+          <option value="clicker">Tapper</option>
           <option value="gesture_mouse">Gesture Mouse</option>
-          <option value="tv_remote">TV Remote</option>
+          <option value="tv_remote">Gesture Remote</option>
         </select>
       </div>
 
