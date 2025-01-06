@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { get, set } from "idb-keyval";
 import {
   collection,
@@ -11,12 +11,12 @@ import {
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "../../../firebase";
-import * as newDeviceConfig from '../../../resources/templates/new_device_config.json';
+//import * as newDeviceConfig from '../../../resources/templates/new_device_config.json';
 import * as clickerDefault from '../cato_schemas/clicker.json';
 import * as mouseDefault from '../cato_schemas/mouse.json';
 import * as gestureDefault from '../cato_schemas/gesture.json';
 import * as tvRemoteDefault from '../cato_schemas/tv_remote.json';
-import * as bindingsDefault from '../cato_schemas/bindings.json';
+//import * as bindingsDefault from '../cato_schemas/bindings.json';
 import * as clickerBindings from '../cato_schemas/bindings/clicker_bindings.json';
 import * as tvRemoteBindings from '../cato_schemas/bindings/tv_remote_bindings.json';
 import * as gestureMouseBindings from '../cato_schemas/bindings/gesture_mouse_bindings.json';
@@ -24,7 +24,7 @@ import * as practiceDefault from '../cato_schemas/practice.json';
 import * as connectionSpecificDefault from '../cato_schemas/connection_specific.json';
 import * as operationDefault from '../cato_schemas/operation.json';
 import * as globalInfoDefault from '../../../resources/templates/global_info_default.json';
-import { getDirectoryHandle, getFileHandle } from "./ReplaceConfig";
+//import { getDirectoryHandle, getFileHandle } from "./ReplaceConfig";
 
 
 
@@ -40,7 +40,7 @@ const modeDefaultGenerator = (mode) => {
       delete pointerData.default;
     }
     return pointerData;
-  } else if (mode == "clicker") {
+  } else if (mode === "clicker") {
     let clickerOperationDefault = deepCopy(operationDefault);
     clickerOperationDefault["operation_mode"]["value"] = "clicker";
     let clickerData = {
@@ -52,7 +52,7 @@ const modeDefaultGenerator = (mode) => {
       delete clickerData.default;
     }
     return clickerData;
-  } else if (mode == "gesture_mouse") {
+  } else if (mode === "gesture_mouse") {
     let gestureMouseOperationDefault = deepCopy(operationDefault);
     gestureMouseOperationDefault["operation_mode"]["value"] = "gesture_mouse";
     let gestureMouseData = {
@@ -67,7 +67,7 @@ const modeDefaultGenerator = (mode) => {
     return gestureMouseData;
 
   }
-  else if (mode == "tv_remote") {
+  else if (mode === "tv_remote") {
     let tvRemoteOperationDefault = deepCopy(operationDefault);
     tvRemoteOperationDefault["operation_mode"]["value"] = "tv_remote";
     let tvRemoteData = {
@@ -85,7 +85,7 @@ const modeDefaultGenerator = (mode) => {
   }
 
 
-  else if (mode == "practice") {
+  else if (mode === "practice") {
     let practiceOperationDefault = deepCopy(operationDefault);
     practiceOperationDefault["operation_mode"]["value"] = "practice";
     let practiceData = {
@@ -171,7 +171,7 @@ const RegisterCatoDevice = ({ user, devices, handleRenderDevices }) => {
           await set('configDirectoryHandle', directoryHandle);
           const permissionStatus = await directoryHandle.requestPermission({ mode: 'readwrite' });
           console.log('Permission Status:', permissionStatus);
-          if (permissionStatus != 'granted') {
+          if (permissionStatus !== 'granted') {
             console.log('Permission to access directory not granted');
             return;
           }
@@ -362,7 +362,7 @@ const RegisterCatoDevice = ({ user, devices, handleRenderDevices }) => {
 
           let currentModeConfig = {};
           let modeMap = {};
-          if (currentOperationMode == "pointer") {
+          if (currentOperationMode === "pointer") {
             currentModeConfig = {
               operation_mode: { ...connection["operation_mode"] },
               mouse: { ...connection["mouse"] },
@@ -373,7 +373,7 @@ const RegisterCatoDevice = ({ user, devices, handleRenderDevices }) => {
               gesture_mouse: JSON.stringify(modeDefaultGenerator("gesture_mouse")),
               tv_remote: JSON.stringify(modeDefaultGenerator("tv_remote"))
             }
-          } else if (currentOperationMode == "tv_remote") {
+          } else if (currentOperationMode === "tv_remote") {
             currentModeConfig = {
               operation_mode: { ...connection["operation_mode"] },
               tv_remote: { ...connection["tv_remote"] },
@@ -386,7 +386,7 @@ const RegisterCatoDevice = ({ user, devices, handleRenderDevices }) => {
               gesture_mouse: JSON.stringify(modeDefaultGenerator("gesture_mouse")),
               tv_remote: JSON.stringify(currentModeConfig)
             }
-          } else if (currentOperationMode == "gesture_mouse") {
+          } else if (currentOperationMode === "gesture_mouse") {
             currentModeConfig = {
               operation_mode: { ...connection["operation_mode"] },
               mouse: { ...connection["mouse"] },
@@ -399,7 +399,7 @@ const RegisterCatoDevice = ({ user, devices, handleRenderDevices }) => {
               gesture_mouse: JSON.stringify(currentModeConfig),
               tv_remote: JSON.stringify(modeDefaultGenerator("tv_remote"))
             }
-          } else if (currentOperationMode == "clicker") {
+          } else if (currentOperationMode === "clicker") {
             currentModeConfig = {
               operation_mode: { ...connection["operation_mode"] },
               clicker: { ...connection["clicker"] },
@@ -422,7 +422,7 @@ const RegisterCatoDevice = ({ user, devices, handleRenderDevices }) => {
         }
       }
     }
-    if (connectionsArray.length == 0) {
+    if (connectionsArray.length === 0) {
       let connectionConfig = deepCopy(connectionSpecificDefault);
       if (connectionConfig.hasOwnProperty("default")) {
         delete connectionConfig.default;
